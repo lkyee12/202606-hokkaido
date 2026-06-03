@@ -991,10 +991,19 @@ createApp({
             closeShoppingModal: () => showShoppingModal.value = false,
             deleteShoppingItem: () => { if(confirm('刪除？')){ shoppingList.value.splice(editingShopIdx.value, 1); showShoppingModal.value = false; } },
             syncHKD: () => { budgetForm.hkd = Math.round(budgetForm.jpy * exchangeRate); },
-            openMap: (item) => {
-                const query = item.mapQuery || item.address || item.name;
-                window.open(`http://googleusercontent.com/maps.google.com/?q=${encodeURIComponent(query)}`, '_blank');
-            }
+openMap: (item) => {
+    const query = item.mapQuery || item.address || item.name;
+    if (!query) return;
+
+    // 直接使用完整的 Google 搜尋網址，中間不要經過任何變數拼接
+    // 請複製下面這一行，確保沒有包含 googleusercontent 字串
+    const correctUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(query);
+    
+    // 輸出到 Console，讓您確認程式碼是否真的更新了
+    console.log("現在要導航的網址是:", correctUrl);
+    
+    window.location.href = correctUrl;
+},
         };
     }
 }).mount('#app');
