@@ -310,6 +310,7 @@ body { font-family: 'Noto Sans TC', 'Noto Sans JP', sans-serif; background-color
             </div>
             
             <div class="weather-panel">
+
                 <div class="flex items-center gap-4">
                     <i :class="getWeatherIcon" class="text-4xl"></i>
                     <div>
@@ -608,6 +609,8 @@ createApp({
         const calcHKD = ref(null);
         const exchangeRate = 0.051;
 
+
+
         // --- 倒數計時 ---
         const countdown = reactive({ days: 0, hours: 0, mins: 0, secs: 0 });
         const updateCountdown = () => {
@@ -650,6 +653,7 @@ createApp({
             weather.location = '札幌 (預設)';
             weather.isLive = false;
         };
+updateWeather();
         const getWeatherIcon = computed(() => {
             if (weather.iconCode === 'Clear' || weather.temp > 25) return 'fa-solid fa-sun text-yellow-400';
             if (weather.iconCode === 'Rain') return 'fa-solid fa-cloud-showers-heavy text-blue-300';
@@ -898,7 +902,7 @@ createApp({
         const totalHKD = computed(() => budgetItems.value.reduce((sum, item) => sum + (Number(item.hkd) || 0), 0));
 
         return {
-            currentTab, selectedDayIndex, days, itineraryData, hotelsDetail, weather, getWeatherIcon,
+            currentTab, selectedDayIndex, days, itineraryData, hotelsDetail, weather, updateWeather, getWeatherIcon,
             countdown, calcJPY, calcHKD, exchangeRate, budgetItems, totalHKD, averageHKD: computed(() => (totalHKD.value / 2).toFixed(1)),
             localExpenses, filteredLocalExpenses,
             filteredTotalLocalJPY: computed(() => {
