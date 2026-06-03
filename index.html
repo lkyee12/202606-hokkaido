@@ -383,7 +383,7 @@ body { font-family: 'Noto Sans TC', 'Noto Sans JP', sans-serif; background-color
                         <div class="drag-handle">
                             <i class="fa-solid fa-bars text-sm"></i>
                         </div>
-                        <div class="card-content" @click="openMap(item)">
+                        <div class="card-content" @click="openNewMap(item)">
                             <i @click.stop="openEditModal(index)" class="fa-solid fa-pen-to-square item-action-btn item-edit-btn"></i>
                             <div class="mb-1">
                                 <span class="bg-lavender-mist text-royal-purple text-[8px] px-1.5 py-0.5 rounded font-bold uppercase tracking-tighter">{{ item.category }}</span>
@@ -991,18 +991,16 @@ createApp({
             closeShoppingModal: () => showShoppingModal.value = false,
             deleteShoppingItem: () => { if(confirm('刪除？')){ shoppingList.value.splice(editingShopIdx.value, 1); showShoppingModal.value = false; } },
             syncHKD: () => { budgetForm.hkd = Math.round(budgetForm.jpy * exchangeRate); },
-openMap: (item) => {
+// 請將函數名稱改為 openNewMap
+openNewMap: (item) => {
     const query = item.mapQuery || item.address || item.name;
     if (!query) return;
 
-    // 直接使用完整的 Google 搜尋網址，中間不要經過任何變數拼接
-    // 請複製下面這一行，確保沒有包含 googleusercontent 字串
-    const correctUrl = "https://www.google.com/maps/search/?api=1&query=" + encodeURIComponent(query);
+    // 這才是正確的 Google 地圖搜尋網址
+    const url = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(query);
     
-    // 輸出到 Console，讓您確認程式碼是否真的更新了
-    console.log("現在要導航的網址是:", correctUrl);
-    
-    window.location.href = correctUrl;
+    // 強制用這行
+    window.location.href = url;
 },
         };
     }
