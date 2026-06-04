@@ -157,6 +157,7 @@ body { font-family: 'Noto Sans TC', 'Noto Sans JP', sans-serif; background-color
                     <option value="住宿">住宿</option>
                     <option value="購物">購物</option>
                 </select>
+
             </div>
             <div class="input-group">
                 <label class="input-label flex justify-between">Google Map 關鍵字 <span class="text-[9px] text-royal-purple/50 lowercase italic">自定義精確位置</span></label>
@@ -333,7 +334,8 @@ body { font-family: 'Noto Sans TC', 'Noto Sans JP', sans-serif; background-color
             <div id="itinerary-list">
                 <div v-for="(item, index) in currentItinerary" :key="item.id || index" :data-id="index">
                     
-                    <div v-if="item.type === 'boarding-pass'" class="boarding-pass-theme ignore-drag">
+                    <div v-if="item.type === 'boarding-pass'" 
+     class="boarding-pass-theme ignore-drag">
                         <div class="pass-left">
                             <div class="pass-header">
                                 <div class="flex items-center gap-2">
@@ -966,7 +968,25 @@ updateWeather();
             },
             toggleTravelMode: (idx) => { const item = itineraryData.value[selectedDayIndex.value][idx]; item.travelMode = item.travelMode === 'walk' ? 'drive' : 'walk'; },
             openAddModal: () => { isEditing.value = false; isEditingHotel.value = false; Object.assign(form, { name: '', category: '景點', address: '', tel: '', note: '', mapQuery: '' }); showModal.value = true; },
-            openEditModal: (idx) => { isEditing.value = true; isEditingHotel.value = false; editingIdx.value = idx; Object.assign(form, { mapQuery: '', ...itineraryData.value[selectedDayIndex.value][idx] }); showModal.value = true; },
+            openEditModal: (idx) => {
+    // 1. 強制關閉所有可能干擾的視窗
+    showBudgetModal.value = false;
+    showShoppingModal.value = false;
+    
+    // 2. 開啟編輯模式
+    isEditing.value = true;
+    isEditingHotel.value = false;
+    editingIdx.value = idx;
+    
+    // 3. 抓取被點擊項目的資料
+    const item = itineraryData.value[selectedDayIndex.value][idx];
+    
+    // 4. 將資料填入編輯表單
+    Object.assign(form, { mapQuery: '', ...item });
+    
+    // 5. 強制開啟行程編輯視窗
+    showModal.value = true;
+},
             openEditHotelModal: (idx) => { isEditing.value = true; isEditingHotel.value = true; editingIdx.value = idx; Object.assign(form, { mapQuery: '', ...hotelsDetail.value[idx] }); showModal.value = true; },
             saveHotelItem: () => { hotelsDetail.value[editingIdx.value] = { ...form }; showModal.value = false; },
             closeModal: () => { showModal.value = false; },
