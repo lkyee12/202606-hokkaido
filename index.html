@@ -249,6 +249,11 @@ body { font-family: 'Noto Sans TC', 'Noto Sans JP', sans-serif; background-color
                 <label class="input-label">項目名稱</label>
                 <input v-model="budgetForm.name" class="modal-input">
             </div>
+<label class="block mt-2 text-sm">支付方式</label>
+<select v-model="budgetForm.paymentMethod" class="w-full border p-2">
+    <option>現金</option>
+    <option>信用卡</option>
+</select>
             <div class="input-group">
                 <label class="input-label">付款人</label>
                 <select v-model="budgetForm.payer" class="modal-input">
@@ -578,7 +583,11 @@ body { font-family: 'Noto Sans TC', 'Noto Sans JP', sans-serif; background-color
                             </tr>
                             <tr v-for="(item, index) in filteredLocalExpenses" :key="'local-'+index" @click="openEditLocalModal(item.originalIdx)">
                                 <td><span class="payer-badge" :class="['badge', getPayerClass(item.payer)]">{{ item.payer }}</span></td>
-                                <td class="font-bold">{{ item.name }}</td>
+                                <td class="font-bold">
+    <div>{{ item.name }}</div>
+    <div class="text-[9px] text-slate-400 font-normal">
+        {{ item.paymentMethod || '現金' }}
+    </div>
                                 <td class="val-jpy">{{ item.jpy ? '¥'+item.jpy.toLocaleString() : '-' }}</td>
                                 <td class="val-hkd">${{ (item.hkd || 0).toLocaleString() }}</td>
                                 <td class="val-each">
